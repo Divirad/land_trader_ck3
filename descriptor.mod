@@ -1,7 +1,7 @@
-version="0.0"
+version="1.0.0"
 tags={
-	"Character Interactions"
 	"Gameplay"
+	"Character Interactions"
 }
 name="Land Trader"
 supported_version="1.4.4"
