@@ -1,0 +1,155 @@
+
+
+grant_land_to_mate = {
+	category = interaction_category_friendly
+	common_interaction = yes
+	interface_priority = 59
+	desc = "Send sum land 2 ma boy"
+
+	greeting = positive
+	notification_text = "You wanna sum Land, ma boi?"
+	answer_accept_key = "yeah gimme land bro"
+	answer_reject_key = "me dont want any land!!"
+
+	# wird bei wem angezeigt?
+	is_shown = {
+		NOT = {
+			scope:recipient = scope:actor
+			target_is_liege_or_above = scope:actor
+		}
+
+		# If Receipient is neighbour
+		# or vasal neighbour
+		#scope:recipient = {
+		#	OR = {
+		#		target_is_liege_or_above = scope:actor
+		#		is_pool_guest_of = scope:actor
+		#	}
+		#}
+
+		# Modify to: IF has titles > 1
+		# scope:actor = {
+		#	trigger_if = {
+		#		limit = {
+		#			exists = var:loan_amount_owed
+		#			exists = var:loan_holder
+		#		}
+		#		NOT = { var:loan_holder = scope:recipient }
+		#	}
+		#}
+	}
+
+	# Ausgegraut?
+	is_valid_showing_failures_only = {
+	
+		# granting land only to neighbour rulers
+		scope:recipient = { neighboring_rulers = scope:actor }
+		# you cant grant land to dude you are in war with
+		NOT = { scope:actor = { is_at_war_with = scope:recipient } } 
+		# Monks are disinherited, and should not have land granted to them
+		NOT = { scope:recipient = { has_trait = devoted } }
+
+		# No doctrines
+		custom_description = {
+			text = is_not_theocratic_court_chaplain
+			subject = scope:recipient
+			NAND = {
+				scope:actor.faith = {
+					has_doctrine = doctrine_theocracy_temporal
+				}
+				scope:recipient = {
+					faith = {
+						has_doctrine = doctrine_theocracy_temporal
+					}
+					has_council_position = councillor_court_chaplain
+				}
+			}
+		}
+
+
+		# only if you have one or more titles
+		scope:actor = {
+			any_held_title = {
+				count > 1
+			}
+		}
+
+		# only if recipient is avaiable
+		scope:recipient = { is_diplomatically_available = yes }
+		
+		# triggers only when recipient is not imprisoned
+		trigger_if = {
+			#limit = {
+			#	scope:recipient = {
+			#		is_ruler = no
+			#	}
+			#}
+			scope:recipient = {
+				is_imprisoned = no
+			}
+		}
+
+	}
+
+	can_be_picked_title = {
+		
+		# darf nicht an kriegerorden verliehen sein
+		scope:target = {
+			is_leased_out = no
+			trigger_if = {
+				limit = {
+					scope:recipient = scope:actor.player_heir
+					scope:actor = { has_partition_succession_realm_law_trigger = yes }
+				}
+				custom_description = {
+					# TODO Rewrite
+					text = partition_primary_heir_unfair
+					subject = scope:recipient
+					current_heir = scope:recipient
+				}
+			}
+		}
+
+		custom_description = {
+			# TODO Rewrite
+			text = grant_titles_interaction_children_not_allowed_temple 
+			subject = scope:recipient
+			NOR = {
+				AND = {
+					scope:recipient = {
+						is_adult = no
+					}
+					scope:target = {
+						tier = tier_barony
+						title_province = { has_building_with_flag = temple }
+					}
+				}
+				AND = {
+					scope:recipient = {
+						is_adult = no
+					}
+					scope:target = {
+						tier = tier_county 
+
+						title_province = { 
+							is_county_capital = yes
+							has_building_with_flag = temple 
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	auto_accept = yes
+
+	on_auto_accept = {
+		scope:recipient = {
+			# TODO Rewrite
+			trigger_event = char_interaction.0110
+		}
+	}
+
+
+}
