@@ -13,7 +13,7 @@
 
 	target_type = title
 	target_filter = actor_domain_titles
-	interface_priority = 100
+	interface_priority = 59
 
 	# actor character giving the titles
 	# recipient character receiving the titles
@@ -126,6 +126,59 @@
 
 	
 	on_accept = {
+
+		# TODO Do stuff to prevent multiple presents
+		# TODO Target gains opinion 
+		# TODO Reset opinion modifier 
+
+		scope:actor = {
+			send_interface_message = {
+				type = event_generic_neutral
+
+				# me changed title
+				title = gift_interaction_notification
+				right_icon = scope:recipient
+				
+				# pay_short_term_gold = {
+				#	gold = gift_value
+				#	target = scope:recipient
+				# }
+
+				stress_impact = {
+					greedy = medium_stress_impact_gain
+					generous = medium_stress_impact_loss
+				}
+
+				# adds opinion
+				scope:recipient = {
+					add_opinion = {
+						target = scope:actor
+						this
+						modifier = gift_title_opinion
+						opinion = send_title_opinion
+					}
+				}
+			}
+
+			# Warning for multiple gifts
+			if = {
+				limit = {
+					scope:recipient = {
+						has_opinion_modifier = {
+							target = scope:actor
+							# me changed this
+							modifier = gift_title_opinion
+						}
+					}
+				}
+				# me changed this
+				custom_tooltip = ALREADY_SENT_TITLE_WARNING
+			}
+		}
+
+
+		# stuff already was here
+
 		every_in_list = {
 			list = target_titles
 			save_temporary_scope_as = this_title
@@ -285,57 +338,7 @@
 			}
 		}
 		
-		if = {
-			limit = {
-				any_in_list = {
-					list = target_titles
-					tier = tier_empire
-				}
-			}
-			custom_tooltip = grant_title_modifier_stack_empires
-		}
-		if = {
-			limit = {
-				any_in_list = {
-					list = target_titles
-					tier = tier_kingdom
-				}
-			}
-			custom_tooltip = grant_title_modifier_stack_kingdoms
-		}
-		if = {
-			limit = {
-				any_in_list = {
-					list = titles_to_grant
-					tier = tier_duchy
-				}
-			}
-			custom_tooltip = grant_title_modifier_stack_duchies
-		}
-		if = {
-			limit = {
-				any_in_list = {
-					list = titles_to_grant
-					tier = tier_county
-				}
-			}
-			custom_tooltip = grant_title_modifier_stack_counties
-		}
-		if = {
-			limit = {
-				any_in_list = {
-					list = titles_to_grant
-					tier = tier_barony
-				}
-			}
-			custom_tooltip = grant_title_modifier_stack_baronies
-		}
-		if = {
-			limit = {
-				scope:recipient = { is_a_faction_member = yes }
-			}
-			custom_tooltip = grant_title_modifier_stack_discontent
-		}
+		# i deleted here some stuff, max
 
 		#Stress impact
 		scope:actor = {

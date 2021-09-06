@@ -1,3 +1,6 @@
 ﻿l_german:
   gift_title:0 "Titel-Geschenk"
   gift_title_desc:1 "Schenke [recipient.GetShortUINameNoTooltip] einen deiner Titel."
+  
+
+  ALREADY_SENT_TITLE_WARNING:0 "Du hast [recipient.GetShortUINameNoTooltip] schon einen Titel gesendet. Sendest du ihm noch einen wird der Meinungs-Modifikator zurückgesetzt."
