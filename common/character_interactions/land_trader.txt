@@ -3,10 +3,14 @@
 	category = interaction_category_friendly
 	common_interaction = yes
 
-	desc = grant_titles_interaction_desc
+	#desc = grant_titles_interaction_desc
+	desc = gift_title_desc
 
 	special_interaction = grant_titles_interaction
+
+	#interface = grant_titles
 	interface = grant_titles
+
 	target_type = title
 	target_filter = actor_domain_titles
 	interface_priority = 100

@@ -1,0 +1,3 @@
+﻿l_german:
+  gift_title:0 "Titel-Geschenk"
+  gift_title_desc:1 "Schenke [recipient.GetShortUINameNoTooltip] einen deiner Titel."
